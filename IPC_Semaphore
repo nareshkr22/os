@@ -1,19 +1,21 @@
-#Implement inter process communication using semaphore
 import threading
 import time
 
 class myThread (threading.Thread):
-   def __init__(self, threadID, name, counter):
+   def __init__(self, threadID, name,delay,counter):
       threading.Thread.__init__(self)
       self.threadID = threadID
       self.name = name
+      self.delay = delay
       self.counter = counter
    def run(self):
-      print "Starting " + self.name
+      print "\nStarting " + self.name
       # Get lock to synchronize threads
-      threadLock.acquire()
-      print_time(self.name, self.counter,5)
+      threadLock.acquire()      
+      print self.name+ " Acquired lock"
+      print_time(self.name, self.delay,self.counter)
       # Free lock to release next thread
+      print self.name+ " Lock Released"
       threadLock.release()
 
 def print_time(threadName, delay, counter):
@@ -23,11 +25,12 @@ def print_time(threadName, delay, counter):
       counter -= 1
 
 threadLock = threading.Lock()
-threads = []
 
 # Create new threads
-thread1 = myThread(1, "Thread-1", 1)
-thread2 = myThread(2, "Thread-2", 2)
+counter = int(raw_input("Enter the Counter"))
+
+thread1 = myThread(1, "Thread-1", 1,counter)
+thread2 = myThread(2, "Thread-2", 1,counter)
 
 # Start new Threads
 thread1.start()
