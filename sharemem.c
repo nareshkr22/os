@@ -9,23 +9,23 @@ int main(int argc, const char **argv)
 {
    int shmid; 
    key_t key = 123456;
-   char *shared_memory;
-
-   // Setup shared memory, 11 is the size
-   if ((shmid = shmget(key, 11, IPC_CREAT | 0666)) < 0)
+   char *shared_memory; 
+   if ((shmid = shmget(key, 60, IPC_CREAT | 0666)) < 0)
    {
+ 
       printf("Error getting shared memory id");
       exit(1);
    }
    // Attached shared memory
    if ((shared_memory = shmat(shmid, NULL, 0)) == (char *) -1)
    {
+ 
       printf("Error attaching shared memory id");
       exit(1);
-   }
-   // copy "hello world" to shared memory
-   memcpy(shared_memory, "Hello World", sizeof("Hello World"));
-   // sleep so there is enough time to run the reader!
+   } 
+	    
+   memcpy(shared_memory, "Content From shared mem:", sizeof("Content From shared mem"));
+   // sleep so there is enough time to run he reader!
    sleep(10);
    // Detach and remove shared memory
    shmdt(&shmid);
